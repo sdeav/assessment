@@ -1,0 +1,30 @@
+services:
+    # PHP Service
+    app:
+        container_name: assessment
+        image: assessment:latest
+        build:
+            context: .
+            target: php83
+            args:
+                - APP_ENV=${APP_ENV}
+                - APP_DEBUG=${APP_DEBUG}
+        environment:
+            - APP_ENV=${APP_ENV}
+            - CONTAINER_ROLE=php
+        working_dir: /var/www/html
+        volumes:
+            - ./:/var/www/html
+        ports:
+            - 8000:8000
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    db_data:
+        driver: local
+
