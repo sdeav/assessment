@@ -17,9 +17,13 @@ fi
 
 # Ensure the right file permissions
 echo "Setting file permissions"
-chown -R www-data:www-data /var/www/html
+find /var/www/html -path /var/www/html/.git -prune -o -exec chown www-data:www-data {} \;
 chmod -R 775 /var/www/html/storage
 chmod -R 775 /var/www/html/bootstrap/cache
+
+# Create the SQLite database file
+touch /var/www/html/database/database.sqlite
+chown www-data:www-data /var/www/html/database/database.sqlite
 
 # Run migration and seed database
 if [ "$APP_ENV" != 'production' ]; then
